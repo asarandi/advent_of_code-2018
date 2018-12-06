@@ -1,9 +1,9 @@
-#!/nfs/2016/a/asarandi/.brew/Frameworks/Python.framework/Versions/3.7/bin/python3.7
+#!/usr/bin/env python3
 
 #
 #advent of code 2018
 #day 06
-#part 1
+#part 2
 #
 
 with open('input.txt') as fp:
@@ -12,8 +12,6 @@ with open('input.txt') as fp:
 
 d = {}
 m = 0
-
-a = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 i = 0
 for line in data:
     line = line.split(',')
@@ -21,12 +19,11 @@ for line in data:
     y = int(line[1])
     if x > m: m = x
     if y > m: m = y
-    d[a[i]] = [x,y]
+    d[i] = [x,y]
     i += 1
 
 m += 1
-matrix = [[' ' for x in range(m)] for y in range(m)]
-
+res = 0
 i = 0
 while i < m:
     j = 0
@@ -36,20 +33,8 @@ while i < m:
             cd = abs(i-v[1]) + abs(j-v[0])
             dsum += cd
         if dsum < 10000:
-            matrix[i][j] = '#'
+            res += 1
         j += 1
     i += 1
 
-
-cnt = 0
-i = 0
-while i < m:
-    j = 0
-    while j < m:
-        if matrix[i][j] == '#':
-            cnt += 1
-        j += 1
-    i += 1
-
-
-print(cnt)
+print(res)
