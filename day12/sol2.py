@@ -36,10 +36,12 @@ def make_nextgen(state):
 
 original = state
 for i in range(stable_gen):
+    stripped = state.strip('.')
     state = make_nextgen(state)
+    if state.strip('.') == stripped:
+        break
 
-stripped = state.strip('.')
-diff = state.index(stripped) - stable_gen
+diff = state.index(stripped) - i
 
 res = 0
 j = 0
