@@ -6,23 +6,17 @@
 #part 2
 #
 
+shapes = ['^', '>', 'v', '<']
 def is_cart(character):
-    shapes = ['^', 'v', '<', '>']
     if character in shapes:
         return True
     return False
 
 def cart_turn_left(c):
-    if c == '^': return '<'
-    if c == '>': return '^'
-    if c == 'v': return '>'
-    if c == '<': return 'v'
+    return shapes[shapes.index(c) - 1]
 
 def cart_turn_right(c):
-    if c == '^': return '>'
-    if c == '>': return 'v'
-    if c == 'v': return '<'
-    if c == '<': return '^'
+    return shapes[(shapes.index(c) + 1) % 4]
 
 def cart_intersection_turn(c):
     if c[1] % 3 == 0:
@@ -40,20 +34,16 @@ def cart_curve_turn(c, t):
         else:
             c[0] = cart_turn_left(c[0])
     elif t == '\\':
-        if c[0] == '>' or c[0] == '<':       
+        if c[0] == '>' or c[0] == '<':
             c[0] = cart_turn_right(c[0])
         else:
             c[0] = cart_turn_left(c[0])
 
 def cart_move(c):   #return updated coords
-    if c[0] == '^':
-        c[2] -= 1
-    if c[0] == '>':
-        c[3] += 1
-    if c[0] == 'v':
-        c[2] += 1
-    if c[0] == '<':
-        c[3] -= 1
+    if c[0] == '^': c[2] -= 1
+    if c[0] == '>': c[3] += 1
+    if c[0] == 'v': c[2] += 1
+    if c[0] == '<': c[3] -= 1
     return c[2], c[3]
 
 def is_collision(carts):
@@ -64,20 +54,6 @@ def is_collision(carts):
                     if a != b and carts[a][2] == carts[b][2] and carts[a][3] == carts[b][3]:
                         return True
     return False
-
-def print_game(carts,data):
-    save = []
-    for c in carts:
-        i = carts[c][2]
-        j = carts[c][3]
-        save.append([data[i][j], i, j])
-        data[i][j] = carts[c][0]
-    for line in data:
-        print(''.join(line))
-    for s in save:
-        i = s[1]
-        j = s[2]
-        data[i][j] = s[0]
 
 with open('input.txt') as fp:
     data = fp.read().splitlines()
@@ -102,18 +78,12 @@ for i in range(len(data)):
                 new_character = '-'
             data[i][j] = new_character
 
-
-
 def count_active(carts):
     res = 0
     for c in carts:
         if carts[c][4] == 0:
             res += 1
     return res
-
-#
-# look into sort with lambda key
-#
 
 def bubble_sort_carts_by_value_index(carts, k):
     done = False
@@ -147,11 +117,8 @@ while count_active(carts) > 1:
                         carts[x][2] = -1
                         carts[x][3] = -1
                         carts[x][4] = -1
-#                print('collision:',j,i)
 
 for c in carts:
     if carts[c][4] == 0:
         print("%d,%d" % (carts[c][3], carts[c][2]))
-#        print('active:',carts[c])
-
 
